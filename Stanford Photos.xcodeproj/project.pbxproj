@@ -22,8 +22,8 @@
 		A4A01C0416E0C66B009161DC /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A01BFD16E0C66B009161DC /* ImageViewController.m */; };
 		A4A01C0516E0C66B009161DC /* FlickrPhotoTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A01BFE16E0C66B009161DC /* FlickrPhotoTVC.m */; };
 		A4A01C0616E0C66B009161DC /* LatestFlickrPhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A01C0016E0C66B009161DC /* LatestFlickrPhotosTVC.m */; };
-		A4A01C0916E0C7DB009161DC /* StanfordFlickrPhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A01C0816E0C7DB009161DC /* StanfordFlickrPhotosTVC.m */; };
 		A4A01C0C16E0C9EC009161DC /* AttributedStringViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A01C0A16E0C9EC009161DC /* AttributedStringViewController.m */; };
+		A4A01C1316E0E321009161DC /* FlickrTagTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A4A01C1216E0E321009161DC /* FlickrTagTVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,10 +51,10 @@
 		A4A01C0016E0C66B009161DC /* LatestFlickrPhotosTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LatestFlickrPhotosTVC.m; sourceTree = "<group>"; };
 		A4A01C0116E0C66B009161DC /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
 		A4A01C0216E0C66B009161DC /* LatestFlickrPhotosTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LatestFlickrPhotosTVC.h; sourceTree = "<group>"; };
-		A4A01C0716E0C7DB009161DC /* StanfordFlickrPhotosTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StanfordFlickrPhotosTVC.h; sourceTree = SOURCE_ROOT; };
-		A4A01C0816E0C7DB009161DC /* StanfordFlickrPhotosTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StanfordFlickrPhotosTVC.m; sourceTree = SOURCE_ROOT; };
 		A4A01C0A16E0C9EC009161DC /* AttributedStringViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributedStringViewController.m; sourceTree = "<group>"; };
 		A4A01C0B16E0C9EC009161DC /* AttributedStringViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributedStringViewController.h; sourceTree = "<group>"; };
+		A4A01C1116E0E321009161DC /* FlickrTagTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrTagTVC.h; sourceTree = "<group>"; };
+		A4A01C1216E0E321009161DC /* FlickrTagTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrTagTVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,10 +78,10 @@
 				A4A01BF916E0C66B009161DC /* FlickrFetcher */,
 				A4A01BEB16E0C521009161DC /* MainStoryboard_iPhone.storyboard */,
 				A4A01BEE16E0C521009161DC /* MainStoryboard_iPad.storyboard */,
+				A4A01C1116E0E321009161DC /* FlickrTagTVC.h */,
+				A4A01C1216E0E321009161DC /* FlickrTagTVC.m */,
 				A4A01BFF16E0C66B009161DC /* FlickrPhotoTVC.h */,
 				A4A01BFE16E0C66B009161DC /* FlickrPhotoTVC.m */,
-				A4A01C0716E0C7DB009161DC /* StanfordFlickrPhotosTVC.h */,
-				A4A01C0816E0C7DB009161DC /* StanfordFlickrPhotosTVC.m */,
 				A4A01C0116E0C66B009161DC /* ImageViewController.h */,
 				A4A01BFD16E0C66B009161DC /* ImageViewController.m */,
 				A4A01C0A16E0C9EC009161DC /* AttributedStringViewController.m */,
@@ -220,8 +220,8 @@
 				A4A01C0416E0C66B009161DC /* ImageViewController.m in Sources */,
 				A4A01C0516E0C66B009161DC /* FlickrPhotoTVC.m in Sources */,
 				A4A01C0616E0C66B009161DC /* LatestFlickrPhotosTVC.m in Sources */,
-				A4A01C0916E0C7DB009161DC /* StanfordFlickrPhotosTVC.m in Sources */,
 				A4A01C0C16E0C9EC009161DC /* AttributedStringViewController.m in Sources */,
+				A4A01C1316E0E321009161DC /* FlickrTagTVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
