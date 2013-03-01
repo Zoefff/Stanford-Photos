@@ -8,6 +8,7 @@
 
 #import "FlickrPhotoTVC.h"
 #import "FlickrFetcher.h"
+#import "ImageViewController.h"
 
 @interface FlickrPhotoTVC() <UISplitViewControllerDelegate>
 @end
@@ -27,11 +28,30 @@
     self.splitViewController.delegate = self;
 }
 
-- (BOOL)splitViewController:(UISplitViewController *)svc
-   shouldHideViewController:(UIViewController *)vc
+//- (BOOL)splitViewController:(UISplitViewController *)svc
+//   shouldHideViewController:(UIViewController *)vc
+//              inOrientation:(UIInterfaceOrientation)orientation
+//{
+//    return NO;
+//}
+
+- (BOOL)splitViewController:(UISplitViewController *)sender
+   shouldHideViewController:(UIViewController *)master
               inOrientation:(UIInterfaceOrientation)orientation
 {
-    return NO;
+    return UIInterfaceOrientationIsPortrait(orientation);
+}
+
+- (void)splitViewController:(UISplitViewController *)sender
+     willHideViewController:(UIViewController *)master
+          withBarButtonItem:(UIBarButtonItem *)barButtonItem
+       forPopoverController:(UIPopoverController *)popover
+{
+	barButtonItem.title = @"Master"; // use a better word than “Master”!
+									 // setSplitViewBarButtonItem: must put the bar button somewhere on screen
+									 // probably in a UIToolbar or a UINavigationBar in the detail (right-side)
+	id detailViewController = [self.splitViewController.viewControllers lastObject];
+	[detailViewController setSplitViewBarButtonItem:barButtonItem];
 }
 
 #pragma mark - Segue

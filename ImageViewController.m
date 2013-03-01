@@ -10,13 +10,27 @@
 #import "AttributedStringViewController.h"
 
 @interface ImageViewController () <UIScrollViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *titleBarButtonItem;
 @property (strong, nonatomic) UIPopoverController *urlPopover;
+
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+
 @end
 
 @implementation ImageViewController
+
+- (void)setSplitViewBarButtonItem:(UIBarButtonItem *)barButtonItem {
+	UIToolbar *toolbar = [self toolbar]; // probably an outlet
+    NSMutableArray *toolbarItems = [toolbar.items mutableCopy];
+	if (_splitViewBarButtonItem) [toolbarItems removeObject:_splitViewBarButtonItem];
+	//￼ put the bar button on the left of our existing toolbar
+    if (barButtonItem) [toolbarItems insertObject:barButtonItem atIndex:0];
+    toolbar.items = toolbarItems;
+    _splitViewBarButtonItem = barButtonItem;
+}
 
 // returns whether the "Show URL" segue should be allowed to fire
 // prohibits the segue if we don't have a URL set in us yet or
@@ -60,19 +74,6 @@
 {
     _imageURL = imageURL;
     [self resetImage];
-}
-
--(void)setZoomLevel{
-	if (self.imageView.image) {
-			// Width ratio compares the width of the viewing area with the width of the image
-		float widthRatio = self.scrollView.bounds.size.width / self.imageView.image.size.width;
-		
-			// Height ratio compares the height of the viewing area with the height of the image
-		float heightRatio = self.scrollView.bounds.size.height / self.imageView.image.size.height;
-			// Update the zoom scale
-		[self.scrollView setZoomScale:MAX(widthRatio, heightRatio) animated:TRUE];
-		[self.scrollView flashScrollIndicators];
-	}
 }
 
 - (void)resetImage
@@ -120,6 +121,20 @@
 //With Autolayout, you have to do geometry-dependent in viewDidLayoutSubviews. viewDidLayoutSubviews is the method sent to you after constraints have been processed.
 //Note that while viewWillAppear: will get called only as you go (back) on screen ...
 //... viewDidLayoutSubviews is called every time self.view’s bounds changes (i.e. more often)
+
+
+-(void)setZoomLevel{
+	if (self.imageView.image) {
+			// Width ratio compares the width of the viewing area with the width of the image
+		float widthRatio = self.scrollView.bounds.size.width / self.imageView.image.size.width;
+		
+			// Height ratio compares the height of the viewing area with the height of the image
+		float heightRatio = self.scrollView.bounds.size.height / self.imageView.image.size.height;
+			// Update the zoom scale
+		[self.scrollView setZoomScale:MAX(widthRatio, heightRatio) animated:TRUE];
+		[self.scrollView flashScrollIndicators];
+	}
+}
 
 -(void)viewDidLayoutSubviews{
 	[self setZoomLevel];
