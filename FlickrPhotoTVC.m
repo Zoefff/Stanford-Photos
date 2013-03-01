@@ -87,16 +87,9 @@
 - (void)addToRecent:(NSDictionary *)currentPhoto {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *recentPhotos = [[defaults objectForKey:RECENT_PHOTOS_KEY]mutableCopy];
-    if (!recentPhotos) recentPhotos = [NSMutableArray array];
+    if (!recentPhotos) recentPhotos = [[NSMutableArray alloc]init];
     
-    BOOL currentPhotoIsAlreadyStoredInRecentPhotos = false;
-    for (NSDictionary *photo in recentPhotos){
-        if ([currentPhoto objectForKey:FLICKR_PHOTO_ID]==[photo objectForKey:FLICKR_PHOTO_ID]) {
-            currentPhotoIsAlreadyStoredInRecentPhotos=TRUE;
-        }
-    }
-    
-    if ((currentPhoto) && (!currentPhotoIsAlreadyStoredInRecentPhotos))[recentPhotos insertObject:currentPhoto atIndex:0];
+    if ((currentPhoto) && (![recentPhotos containsObject:currentPhoto]))[recentPhotos insertObject:currentPhoto atIndex:0];
     if (recentPhotos.count>25) {
         [recentPhotos removeLastObject];
     }

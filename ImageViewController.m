@@ -63,15 +63,16 @@
 }
 
 -(void)setZoomLevel{
-		// Width ratio compares the width of the viewing area with the width of the image
-    float widthRatio = self.scrollView.bounds.size.width / self.imageView.image.size.width;
-    
-		// Height ratio compares the height of the viewing area with the height of the image
-    float heightRatio = self.scrollView.bounds.size.height / self.imageView.image.size.height;
-	
-		// Update the zoom scale
-    [self.scrollView setZoomScale:MAX(widthRatio, heightRatio) animated:TRUE];
-    [self.scrollView flashScrollIndicators];
+	if (self.imageView.image) {
+			// Width ratio compares the width of the viewing area with the width of the image
+		float widthRatio = self.scrollView.bounds.size.width / self.imageView.image.size.width;
+		
+			// Height ratio compares the height of the viewing area with the height of the image
+		float heightRatio = self.scrollView.bounds.size.height / self.imageView.image.size.height;
+			// Update the zoom scale
+		[self.scrollView setZoomScale:MAX(widthRatio, heightRatio) animated:TRUE];
+		[self.scrollView flashScrollIndicators];
+	}
 }
 
 - (void)resetImage
@@ -87,7 +88,6 @@
             self.scrollView.contentSize = image.size;
             self.imageView.image = image;
             self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-			[self setZoomLevel];
         }
     }
 }
@@ -115,6 +115,15 @@
     self.scrollView.delegate = self;
     [self resetImage];
     self.titleBarButtonItem.title = self.title;
+}
+
+//With Autolayout, you have to do geometry-dependent in viewDidLayoutSubviews. viewDidLayoutSubviews is the method sent to you after constraints have been processed.
+//Note that while viewWillAppear: will get called only as you go (back) on screen ...
+//... viewDidLayoutSubviews is called every time self.view’s bounds changes (i.e. more often)
+
+-(void)viewDidLayoutSubviews{
+	[self setZoomLevel];
+
 }
 
 @end
