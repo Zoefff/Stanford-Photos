@@ -46,6 +46,7 @@
                     NSURL *url = [FlickrFetcher urlForPhoto:self.photos[indexPath.row] format:FlickrPhotoFormatLarge];
                     [segue.destinationViewController performSelector:@selector(setImageURL:) withObject:url];
                     [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]];
+					[self addToRecent:self.photos[indexPath.row]];
                 }
             }
         }
@@ -79,6 +80,29 @@
     cell.detailTextLabel.text = [self subtitleForRow:indexPath.row];
     
     return cell;
+}
+
+#define RECENT_PHOTOS_KEY @"Recent Photo"
+
+- (void)addToRecent:(NSDictionary *)currentPhoto {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *recentPhotos = [[defaults objectForKey:RECENT_PHOTOS_KEY]mutableCopy];
+    if (!recentPhotos) recentPhotos = [NSMutableArray array];
+    
+    BOOL currentPhotoIsAlreadyStoredInRecentPhotos = false;
+    for (NSDictionary *photo in recentPhotos){
+        if ([currentPhoto objectForKey:FLICKR_PHOTO_ID]==[photo objectForKey:FLICKR_PHOTO_ID]) {
+            currentPhotoIsAlreadyStoredInRecentPhotos=TRUE;
+        }
+    }
+    
+    if ((currentPhoto) && (!currentPhotoIsAlreadyStoredInRecentPhotos))[recentPhotos insertObject:currentPhoto atIndex:0];
+    if (recentPhotos.count>25) {
+        [recentPhotos removeLastObject];
+    }
+    
+    [defaults setObject:recentPhotos forKey:RECENT_PHOTOS_KEY];
+    [defaults synchronize];
 }
 
 @end

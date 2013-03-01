@@ -22,14 +22,6 @@
 
 @implementation FlickrTagTVC
 
-//- (void)setPhotos:(NSArray *)tags
-//{
-//    _tags = tags;
-//    [self.tableView reloadData];
-//}
-
-#pragma mark - UISplitViewControllerDelegate
-
 -(NSMutableDictionary *)photosForTag{
 	if (!_photosForTag) {
 		_photosForTag = [[NSMutableDictionary alloc]init];
@@ -71,6 +63,7 @@
 
 }
 
+#pragma mark - UISplitViewControllerDelegate
 
 - (BOOL)splitViewController:(UISplitViewController *)svc
    shouldHideViewController:(UIViewController *)vc

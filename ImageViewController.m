@@ -62,6 +62,18 @@
     [self resetImage];
 }
 
+-(void)setZoomLevel{
+		// Width ratio compares the width of the viewing area with the width of the image
+    float widthRatio = self.scrollView.bounds.size.width / self.imageView.image.size.width;
+    
+		// Height ratio compares the height of the viewing area with the height of the image
+    float heightRatio = self.scrollView.bounds.size.height / self.imageView.image.size.height;
+	
+		// Update the zoom scale
+    [self.scrollView setZoomScale:MAX(widthRatio, heightRatio) animated:TRUE];
+    [self.scrollView flashScrollIndicators];
+}
+
 - (void)resetImage
 {
     if (self.scrollView) {
@@ -75,6 +87,7 @@
             self.scrollView.contentSize = image.size;
             self.imageView.image = image;
             self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+			[self setZoomLevel];
         }
     }
 }
