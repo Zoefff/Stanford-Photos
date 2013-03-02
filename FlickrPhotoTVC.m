@@ -40,20 +40,19 @@
           withBarButtonItem:(UIBarButtonItem *)barButtonItem
        forPopoverController:(UIPopoverController *)popover
 {
-	barButtonItem.title = @"Master"; // use a better word than “Master”!
-									 // setSplitViewBarButtonItem: must put the bar button somewhere on screen
-									 // probably in a UIToolbar or a UINavigationBar in the detail (right-side)
-	id detailViewController = [self.splitViewController.viewControllers lastObject];
-	[detailViewController setSplitViewBarButtonItem:barButtonItem];
+	barButtonItem.title = @"Menu";
+		// setSplitViewBarButtonItem: must put the bar button somewhere on screen
+		// probably in a UIToolbar or a UINavigationBar in the detail (right-side)
+	id detailViewController = [self.splitViewController.viewControllers lastObject]; //viewcontrollers is an array, [0]master [1]detail
+	[detailViewController setSplitViewBarButtonItem:barButtonItem]; // calling the setter
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-								duration:(NSTimeInterval)duration{
-	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-		id detailViewController = [self.splitViewController.viewControllers lastObject];
-		[detailViewController setSplitViewBarButtonItem:nil];
-	
-	}
+-(void) splitViewController:sender
+	 willShowViewController:master
+  invalidatingBarButtonItem:barButtonItem
+{
+	id detailViewController = [self.splitViewController.viewControllers lastObject];
+	[detailViewController setSplitViewBarButtonItem:nil];
 }
 
 #pragma mark - Segue
@@ -89,7 +88,7 @@
 
 - (NSString *)subtitleForRow:(NSUInteger)row
 {
-    return [self.photos[row][FLICKR_PHOTO_OWNER] description]; // description because could be NSNull
+    return [[self.photos[row] valueForKeyPath:FLICKR_PHOTO_DESCRIPTION] description]; // description because could be NSNull
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -103,6 +102,8 @@
     
     return cell;
 }
+
+#pragma mark - Recent Photos
 
 #define RECENT_PHOTOS_KEY @"Recent Photo"
 

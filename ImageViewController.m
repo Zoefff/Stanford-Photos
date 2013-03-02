@@ -16,7 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *titleBarButtonItem; // title above scrollview
 @property (strong, nonatomic) UIPopoverController *urlPopover;
 
-@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+
 
 @end
 

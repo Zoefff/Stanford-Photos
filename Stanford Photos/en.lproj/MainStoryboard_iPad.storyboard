@@ -141,9 +141,9 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeW-Ai-DNC"/>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4x-3g-Il2">
                                 <items>
-                                    <barButtonItem title="Item" id="8xU-t0-sxB"/>
+                                    <barButtonItem id="8xU-t0-sxB"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="k1D-OI-y7l"/>
-                                    <barButtonItem title="Item" style="plain" id="5mV-w5-uC8"/>
+                                    <barButtonItem style="plain" id="5mV-w5-uC8"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="2M4-41-gIx"/>
                                 </items>
                             </toolbar>
@@ -228,7 +228,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="QYq-Sa-sbz"/>
+                    <navigationItem key="navigationItem" title="Recent Photos" id="QYq-Sa-sbz"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yfn-DC-qUd" userLabel="First Responder" sceneMemberID="firstResponder"/>
