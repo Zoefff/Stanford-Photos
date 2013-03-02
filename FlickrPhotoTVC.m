@@ -28,13 +28,6 @@
     self.splitViewController.delegate = self;
 }
 
-//- (BOOL)splitViewController:(UISplitViewController *)svc
-//   shouldHideViewController:(UIViewController *)vc
-//              inOrientation:(UIInterfaceOrientation)orientation
-//{
-//    return NO;
-//}
-
 - (BOOL)splitViewController:(UISplitViewController *)sender
    shouldHideViewController:(UIViewController *)master
               inOrientation:(UIInterfaceOrientation)orientation
@@ -52,6 +45,15 @@
 									 // probably in a UIToolbar or a UINavigationBar in the detail (right-side)
 	id detailViewController = [self.splitViewController.viewControllers lastObject];
 	[detailViewController setSplitViewBarButtonItem:barButtonItem];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+								duration:(NSTimeInterval)duration{
+	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+		id detailViewController = [self.splitViewController.viewControllers lastObject];
+		[detailViewController setSplitViewBarButtonItem:nil];
+	
+	}
 }
 
 #pragma mark - Segue
