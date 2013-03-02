@@ -67,7 +67,7 @@
                 if ([segue.destinationViewController respondsToSelector:@selector(setImageURL:)]) {
                     NSURL *url = [FlickrFetcher urlForPhoto:self.photos[indexPath.row] format:FlickrPhotoFormatLarge];
                     [segue.destinationViewController performSelector:@selector(setImageURL:) withObject:url];
-                    [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]];
+                    [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]]; // pass title to 
 					[self addToRecent:self.photos[indexPath.row]];
                 }
             }

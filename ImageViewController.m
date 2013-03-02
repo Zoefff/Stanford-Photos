@@ -13,7 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *titleBarButtonItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *titleBarButtonItem; // title above scrollview
 @property (strong, nonatomic) UIPopoverController *urlPopover;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
@@ -23,12 +23,11 @@
 @implementation ImageViewController
 
 - (void)setSplitViewBarButtonItem:(UIBarButtonItem *)barButtonItem {
-	UIToolbar *toolbar = [self toolbar]; // probably an outlet
-    NSMutableArray *toolbarItems = [toolbar.items mutableCopy];
-	if (_splitViewBarButtonItem) [toolbarItems removeObject:_splitViewBarButtonItem];
-	//￼ put the bar button on the left of our existing toolbar
-    if (barButtonItem) [toolbarItems insertObject:barButtonItem atIndex:0];
-    toolbar.items = toolbarItems;
+	UIToolbar *toolbar = self.toolbar; // probably an outlet
+    NSMutableArray *toolbarItems = [toolbar.items mutableCopy]; // returns an arry of all items on the toolbar. Mutable to be able to make changes
+	if (_splitViewBarButtonItem) [toolbarItems removeObject:_splitViewBarButtonItem]; // remove current button (if there is a current one)
+    if (barButtonItem) [toolbarItems insertObject:barButtonItem atIndex:0]; //￼ put the bar button as the first/on the left of our existing toolbar
+    toolbar.items = toolbarItems; // write back te array with the new items in it
     _splitViewBarButtonItem = barButtonItem;
 }
 
@@ -62,7 +61,7 @@
     }
 }
 
-// sets the title of the titleBarButtonItem (if connected) to the passed title
+// sets the title of the titleBarButtonItem (if connected) to the passed title (passed in this case by the prepareForSegue method)
 
 - (void)setTitle:(NSString *)title
 {

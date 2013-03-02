@@ -15,46 +15,41 @@
 @interface FlickrTagTVC () <UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *photos;
-@property (nonatomic, strong) NSMutableArray *tags;
-@property (nonatomic, strong) NSMutableDictionary *photosForTag;
+@property (nonatomic, strong) NSArray *tags;
+@property (nonatomic, strong) NSDictionary *photosForTag;
 
 @end
 
 @implementation FlickrTagTVC
 
--(NSMutableDictionary *)photosForTag{
-	if (!_photosForTag) {
-		_photosForTag = [[NSMutableDictionary alloc]init];
+-(void)getPhotoTags{
+	NSMutableArray *tags = [[NSMutableArray alloc]init];
+	NSMutableDictionary *photosForTag = [[NSMutableDictionary alloc]init];
+	
+	for (NSDictionary *photo in self.photos) {
+		NSArray *tagsForPhoto = [photo[FLICKR_TAGS] componentsSeparatedByString:@" "];
+		for (NSString *tag in tagsForPhoto){
+			if (![SKIP_TAGS containsObject:tag]) {
+				if (!photosForTag[tag]) {
+					NSMutableArray *photosForThisTag = [@[photo] mutableCopy];
+					[photosForTag setObject:photosForThisTag forKey:tag];
+					[tags addObject:tag];
+				} else {
+					[photosForTag[tag] addObject:photo];
+				}
+			}
+		}
 	}
-	return _photosForTag;
-}
-
--(NSMutableArray *)tags{
-	if (!_tags) {
-		_tags = [[NSMutableArray alloc]init];
-	}
-	return _tags;
+	self.photosForTag = photosForTag;
+	self.tags = [tags sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 }
 
 - (void)awakeFromNib
 {
     self.splitViewController.delegate = self;
 	self.photos = [FlickrFetcher stanfordPhotos];
+	[self getPhotoTags];
 	
-	for (NSDictionary *photo in self.photos) {
-		NSArray *tagsForPhoto = [photo[FLICKR_TAGS] componentsSeparatedByString:@" "];
-		for (NSString *tag in tagsForPhoto){
-			if (![SKIP_TAGS containsObject:tag]) {
-				if (!self.photosForTag[tag]) {
-					NSMutableArray *photosForThisTag = [@[photo] mutableCopy];
-					[self.photosForTag setObject:photosForThisTag forKey:tag];
-					[self.tags addObject:tag];
-				} else {
-					[self.photosForTag[tag] addObject:photo];
-				}
-			}
-		}
-	}
 }
 
 - (void)viewDidLoad
@@ -99,7 +94,7 @@
 
 - (NSString *)titleForRow:(NSUInteger)row
 {
-    return self.tags[row]; // description because could be NSNull
+    return [self.tags[row] capitalizedString]; // description because could be NSNull
 }
 
 - (NSString *)subtitleForRow:(NSUInteger)row
