@@ -141,7 +141,6 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeW-Ai-DNC"/>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4x-3g-Il2">
                                 <items>
-                                    <barButtonItem id="8xU-t0-sxB"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="k1D-OI-y7l"/>
                                     <barButtonItem style="plain" id="5mV-w5-uC8"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="2M4-41-gIx"/>
@@ -165,7 +164,6 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="scrollView" destination="jeW-Ai-DNC" id="8K6-mA-Npq"/>
-                        <outlet property="splitViewBarButtonItem" destination="8xU-t0-sxB" id="AZd-yD-JNt"/>
                         <outlet property="titleBarButtonItem" destination="5mV-w5-uC8" id="VdJ-PR-yn7"/>
                         <outlet property="toolbar" destination="X4x-3g-Il2" id="c6v-OG-e8u"/>
                     </connections>

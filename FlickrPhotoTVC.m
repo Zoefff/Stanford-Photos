@@ -54,6 +54,27 @@
 	id detailViewController = [self.splitViewController.viewControllers lastObject];
 	[detailViewController setSplitViewBarButtonItem:nil];
 }
+#pragma mark - Bar button transfer
+
+-(id)splitViewDetailWithBarButtonItem
+{
+	id detail = [self.splitViewController.viewControllers lastObject]; // get detail VC
+	if (![detail respondsToSelector:@selector(setSplitViewBarButtonItem:)] ||
+		![detail respondsToSelector:@selector(splitViewBarButtonItem)]){
+		detail = nil;
+	}
+	return detail;
+}
+
+	// This method is necessary when a new detail VC is instantiated as a result of a segue. The current bar button item will disappear, so grab the current one and transfer it to the new detail vc by setting a property. The setter of the property in the new detail VC will put it on its toolbar
+- (void)transferSplitViewBarButtonItemToViewController:(id)destinationViewController
+{
+	id detail = [self splitViewDetailWithBarButtonItem]; // get detail VC
+    UIBarButtonItem *buttonToBeTransferred = [detail splitViewBarButtonItem]; // get pointer to button in detail
+//	[detail setSplitViewBarButtonItem:nil]; // set button ivar to nil (I don't know why that is necessary)
+	if (buttonToBeTransferred)	// if there is a button: transfer it to the VC that is replacing the current one
+		[destinationViewController setSplitViewBarButtonItem:buttonToBeTransferred];
+}
 
 #pragma mark - Segue
 
@@ -64,6 +85,7 @@
         if (indexPath) {
             if ([segue.identifier isEqualToString:@"Show Image"]) {
                 if ([segue.destinationViewController respondsToSelector:@selector(setImageURL:)]) {
+					[self transferSplitViewBarButtonItemToViewController:segue.destinationViewController];
                     NSURL *url = [FlickrFetcher urlForPhoto:self.photos[indexPath.row] format:FlickrPhotoFormatLarge];
                     [segue.destinationViewController performSelector:@selector(setImageURL:) withObject:url];
                     [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]]; // pass title to 

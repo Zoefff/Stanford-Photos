@@ -11,7 +11,7 @@
 @interface ImageViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *imageURL;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *splitViewBarButtonItem;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *splitViewBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 
 @end

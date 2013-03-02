@@ -16,19 +16,28 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *titleBarButtonItem; // title above scrollview
 @property (strong, nonatomic) UIPopoverController *urlPopover;
 
-
-
 @end
 
 @implementation ImageViewController
 
-- (void)setSplitViewBarButtonItem:(UIBarButtonItem *)barButtonItem {
-	UIToolbar *toolbar = self.toolbar; // probably an outlet
-    NSMutableArray *toolbarItems = [toolbar.items mutableCopy]; // returns an arry of all items on the toolbar. Mutable to be able to make changes
+#pragma mark - Bar Button stuff
+
+	// the setter for the bar button item is split in two, becasue if the setter is called before viewDidLoad, the outlets will not have been set yet. This metod is therefore also called from viewDidLoad (similar to the setter for image)
+
+- (void)handleSplitViewBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+    NSMutableArray *toolbarItems = [self.toolbar.items mutableCopy]; // returns an arry of all items on the toolbar. Mutable to be able to make changes
 	if (_splitViewBarButtonItem) [toolbarItems removeObject:_splitViewBarButtonItem]; // remove current button (if there is a current one)
     if (barButtonItem) [toolbarItems insertObject:barButtonItem atIndex:0]; //￼ put the bar button as the first/on the left of our existing toolbar
-    toolbar.items = toolbarItems; // write back te array with the new items in it
+    self.toolbar.items = toolbarItems; // write back te array with the new items in it
     _splitViewBarButtonItem = barButtonItem;
+
+}
+
+- (void)setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem {
+	if (_splitViewBarButtonItem != splitViewBarButtonItem) {	// if a new button is given to me, then set it
+		[self handleSplitViewBarButtonItem:splitViewBarButtonItem];
+	}
 }
 
 // returns whether the "Show URL" segue should be allowed to fire
@@ -115,6 +124,7 @@
     self.scrollView.delegate = self;
     [self resetImage]; //need to reset image in case setter is called before viewDidLoad was called (that's when outlets are set)
     self.titleBarButtonItem.title = self.title;
+	[self handleSplitViewBarButtonItem:self.splitViewBarButtonItem];
 }
 
 //With Autolayout, you have to do geometry-dependent in viewDidLayoutSubviews. viewDidLayoutSubviews is the method sent to you after constraints have been processed.
