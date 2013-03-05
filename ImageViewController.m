@@ -15,6 +15,7 @@
 @property (strong, nonatomic) UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *titleBarButtonItem; // title above scrollview
 @property (strong, nonatomic) UIPopoverController *urlPopover;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
 @end
 
@@ -89,16 +90,33 @@
     if (self.scrollView) {
         self.scrollView.contentSize = CGSizeZero;
         self.imageView.image = nil;
+		
+		[self.spinner startAnimating];
+		NSURL *imageURL = self.imageURL; //grab the URL before we send the fetch off to a different thread (no __, because only read only necessary in the thread)
         
-        NSData *imageData = [[NSData alloc] initWithContentsOfURL:self.imageURL];
-        UIImage *image = [[UIImage alloc] initWithData:imageData];
-        if (image) {
-            self.scrollView.zoomScale = 1.0; //reset zoomScale
-            self.scrollView.contentSize = image.size; //set size of canvas to the size of the image
-            self.imageView.image = image;
-            self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-        }
-    }
+		dispatch_queue_t imageFetchQ = dispatch_queue_create("image fetcher", NULL);
+        dispatch_async(imageFetchQ, ^{
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES; // bad
+
+			NSData *imageData = [[NSData alloc] initWithContentsOfURL:self.imageURL];
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // bad
+            // UIImage is one of the few UIKit objects which is thread-safe, so we can do this here
+			UIImage *image = [[UIImage alloc] initWithData:imageData];
+			// check to make sure we are even still interested in this image (might have touched away)
+            if (self.imageURL == imageURL) {
+				// dispatch back to main queue to do UIKit work
+                dispatch_async(dispatch_get_main_queue(), ^{
+					if (image) {
+						self.scrollView.zoomScale = 1.0; //reset zoomScale
+						self.scrollView.contentSize = image.size; //set size of canvas to the size of the image
+						self.imageView.image = image;
+						self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);  // where in the superview will the imageView be drawn
+					}
+					[self.spinner stopAnimating];
+				});
+			}
+		});
+	}
 }
 
 - (UIImageView *)imageView

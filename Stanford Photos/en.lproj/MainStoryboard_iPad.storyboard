@@ -81,6 +81,12 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="List Of Tags" id="Cph-P8-E58"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="zhW-cz-wcp">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="refreshPhotos" destination="FLF-AI-OBV" eventType="valueChanged" id="B74-S8-pCf"/>
+                        </connections>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nQ4-N4-TR7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -125,6 +131,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="List Of Photos" id="R7c-oq-WKR"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="rG0-an-LK5">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6wc-Vi-0Vo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -138,6 +147,7 @@
                         <rect key="frame" x="0.0" y="20" width="768" height="960"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Rvv-Ej-fQc"/>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeW-Ai-DNC"/>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4x-3g-Il2">
                                 <items>
@@ -152,8 +162,10 @@
                             <constraint firstItem="jeW-Ai-DNC" firstAttribute="top" secondItem="X4x-3g-Il2" secondAttribute="bottom" type="default" id="5gn-KJ-123"/>
                             <constraint firstItem="X4x-3g-Il2" firstAttribute="trailing" secondItem="UOe-AY-tLN" secondAttribute="trailing" type="default" id="BHi-Qu-3mz"/>
                             <constraint firstItem="X4x-3g-Il2" firstAttribute="top" secondItem="UOe-AY-tLN" secondAttribute="top" type="default" id="Cac-iD-IqJ"/>
+                            <constraint firstItem="Rvv-Ej-fQc" firstAttribute="leading" secondItem="UOe-AY-tLN" secondAttribute="leading" constant="365" id="NA8-IN-OjV"/>
                             <constraint firstItem="X4x-3g-Il2" firstAttribute="leading" secondItem="UOe-AY-tLN" secondAttribute="leading" type="default" id="VKd-BH-GoA"/>
                             <constraint firstItem="jeW-Ai-DNC" firstAttribute="bottom" secondItem="UOe-AY-tLN" secondAttribute="bottom" type="default" id="W1j-p2-kWL"/>
+                            <constraint firstItem="Rvv-Ej-fQc" firstAttribute="centerY" secondItem="UOe-AY-tLN" secondAttribute="centerY" type="default" id="jHD-zc-D9V"/>
                             <constraint firstItem="jeW-Ai-DNC" firstAttribute="trailing" secondItem="UOe-AY-tLN" secondAttribute="trailing" type="default" id="s0u-7G-PEG"/>
                             <constraint firstItem="jeW-Ai-DNC" firstAttribute="leading" secondItem="UOe-AY-tLN" secondAttribute="leading" type="default" id="vWs-F5-kCv"/>
                         </constraints>
@@ -164,6 +176,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="scrollView" destination="jeW-Ai-DNC" id="8K6-mA-Npq"/>
+                        <outlet property="spinner" destination="Rvv-Ej-fQc" id="wi2-Ai-Zfu"/>
                         <outlet property="titleBarButtonItem" destination="5mV-w5-uC8" id="VdJ-PR-yn7"/>
                         <outlet property="toolbar" destination="X4x-3g-Il2" id="c6v-OG-e8u"/>
                     </connections>
@@ -262,6 +275,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ImageViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="spinner" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="splitViewBarButtonItem" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="titleBarButtonItem" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
@@ -273,6 +287,9 @@
         <class className="RecentPhotoTVC" superclassName="FlickrPhotoTVC">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/RecentPhotoTVC.h"/>
         </class>
+        <class className="UIRefreshControl" superclassName="UIControl">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UIRefreshControl.h"/>
+        </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
@@ -280,6 +297,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="H1Y-V2-koJ"/>
+        <segue reference="2vl-0v-p9o"/>
     </inferredMetricsTieBreakers>
 </document>

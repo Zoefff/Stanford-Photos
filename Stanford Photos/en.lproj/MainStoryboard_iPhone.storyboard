@@ -63,6 +63,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="List Of Tags" id="hDe-Wj-6ec"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="ARU-L1-Zs6">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tO0-iE-SUP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -104,6 +107,9 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="List Of Photos" id="i2w-fT-iNM"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="6js-Gc-3tN">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zGf-q6-qJn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -117,19 +123,23 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="g0r-N8-nUx"/>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uoW-d5-buC"/>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="uoW-d5-buC" firstAttribute="trailing" secondItem="GAB-O7-LUM" secondAttribute="trailing" type="default" id="XyT-aC-hhY"/>
+                            <constraint firstItem="g0r-N8-nUx" firstAttribute="leading" secondItem="GAB-O7-LUM" secondAttribute="leading" constant="141" id="bwa-Lu-cYU"/>
                             <constraint firstItem="uoW-d5-buC" firstAttribute="bottom" secondItem="GAB-O7-LUM" secondAttribute="bottom" type="default" id="ch9-Gc-TTU"/>
                             <constraint firstItem="uoW-d5-buC" firstAttribute="top" secondItem="GAB-O7-LUM" secondAttribute="top" type="default" id="cns-0c-0qH"/>
                             <constraint firstItem="uoW-d5-buC" firstAttribute="leading" secondItem="GAB-O7-LUM" secondAttribute="leading" type="default" id="ieE-5K-i26"/>
+                            <constraint firstItem="g0r-N8-nUx" firstAttribute="centerY" secondItem="uoW-d5-buC" secondAttribute="centerY" type="default" id="zFP-Bw-549"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="lbK-m0-Bzn"/>
                     <connections>
                         <outlet property="scrollView" destination="uoW-d5-buC" id="WdE-ps-Cb2"/>
+                        <outlet property="spinner" destination="g0r-N8-nUx" id="qAr-oq-Z70"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M1l-na-5DK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -216,6 +226,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="oQz-Dj-ESb"/>
+        <segue reference="Pum-EA-Mvr"/>
     </inferredMetricsTieBreakers>
 </document>

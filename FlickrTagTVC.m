@@ -23,19 +23,19 @@
 @implementation FlickrTagTVC
 
 -(void)getPhotoTags{
-	NSMutableArray *tags = [[NSMutableArray alloc]init];
-	NSMutableDictionary *photosForTag = [[NSMutableDictionary alloc]init];
+	NSMutableArray *tags = [[NSMutableArray alloc]init]; // array with all photo tags
+	NSMutableDictionary *photosForTag = [[NSMutableDictionary alloc]init]; // array with all photos per tag
 	
 	for (NSDictionary *photo in self.photos) {
-		NSArray *tagsForPhoto = [photo[FLICKR_TAGS] componentsSeparatedByString:@" "];
-		for (NSString *tag in tagsForPhoto){
-			if (![SKIP_TAGS containsObject:tag]) {
-				if (!photosForTag[tag]) {
-					NSMutableArray *photosForThisTag = [@[photo] mutableCopy];
-					[photosForTag setObject:photosForThisTag forKey:tag];
-					[tags addObject:tag];
+		NSArray *tagsForPhoto = [photo[FLICKR_TAGS] componentsSeparatedByString:@" "]; // first load all tags for each photo in an array
+		for (NSString *tag in tagsForPhoto){ // then loop through each tag
+			if (![SKIP_TAGS containsObject:tag]) { // skip all SKIP_TAGS
+				if (!photosForTag[tag]) { // of there are no photos associated with this tag
+					NSMutableArray *photosForThisTag = [@[photo] mutableCopy]; // create a mutuable array, initially consisting of the first ohoto associated with this tag
+					[photosForTag setObject:photosForThisTag forKey:tag]; //add the tag and array to the dictionary
+					[tags addObject:tag]; //add the tag (maybe better to use allKeys method to extract all tags
 				} else {
-					[photosForTag[tag] addObject:photo];
+					[photosForTag[tag] addObject:photo]; // tag is already in dict, add this photo to the array associated with this tag
 				}
 			}
 		}
@@ -47,15 +47,38 @@
 - (void)awakeFromNib
 {
     self.splitViewController.delegate = self;
-	self.photos = [FlickrFetcher stanfordPhotos];
-	[self getPhotoTags];
-	
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	[self refreshPhotos];
+	// no ctrl-drag possible, therefore done in code 
+	[self.refreshControl addTarget:self
+							action:@selector(refreshPhotos)
+				  forControlEvents:UIControlEventValueChanged];
+}
 
+	// As asked about in class, this mechanism could conceivably be abstract in superclass.
+	// It would then want to call something like "fetchPhotos" which subclasses could override
+	//  (and which this class would implement with "return [FlickrFetcher latestGeoreferencedPhotos]")
+	// and in that case this method would not want to call itself "loadLatestPhotosFromFlickr"
+	//  (probaby something like "loadPhotos").
+	// We're doing it here (instead of superclass) just to make the queueing more obvious.
+
+
+-(IBAction)refreshPhotos{ // no ctrl-drag possible, therefore done in code
+	[self.refreshControl beginRefreshing]; // start animation
+	dispatch_queue_t loaderQ = dispatch_queue_create("flick latest loader", NULL); // fetching banished to thread
+	dispatch_async(loaderQ, ^{
+		NSArray *refreshedPhotos = [FlickrFetcher stanfordPhotos];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.photos = refreshedPhotos; // self.photos is UIKit: main queue
+			[self.refreshControl endRefreshing];
+		});
+	});
+	[self getPhotoTags]; //bug: photos did not get set
+	[self.tableView reloadData];
 }
 
 #pragma mark - UISplitViewControllerDelegate
