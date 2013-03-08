@@ -54,9 +54,9 @@
     [super viewDidLoad];
 	[self refreshPhotos];
 	// no ctrl-drag possible, therefore done in code 
-	[self.refreshControl addTarget:self
-							action:@selector(refreshPhotos)
-				  forControlEvents:UIControlEventValueChanged];
+//	[self.refreshControl addTarget:self
+//							action:@selector(refreshPhotos)
+//				  forControlEvents:UIControlEventValueChanged];
 }
 
 	// As asked about in class, this mechanism could conceivably be abstract in superclass.
@@ -74,11 +74,11 @@
 		NSArray *refreshedPhotos = [FlickrFetcher stanfordPhotos];
 		dispatch_async(dispatch_get_main_queue(), ^{
 			self.photos = refreshedPhotos; // self.photos is UIKit: main queue
+			[self getPhotoTags]; //bug: photos did not get set
+			[self.tableView reloadData];
 			[self.refreshControl endRefreshing];
 		});
 	});
-	[self getPhotoTags]; //bug: photos did not get set
-	[self.tableView reloadData];
 }
 
 #pragma mark - UISplitViewControllerDelegate
