@@ -23,12 +23,13 @@
 @implementation FlickrTagTVC
 
 -(void)setTags:(NSArray *)tags{
-	_tags=tags;
-	[self.tableView reloadData];
+	if (_tags!=tags){ // only set and reload if tags have changed
+		_tags=tags;
+		[self.tableView reloadData];
+	}
 }
 
 -(void)getPhotoTags{
-	NSMutableArray *tags = [[NSMutableArray alloc]init]; // array with all photo tags
 	NSMutableDictionary *photosForTag = [[NSMutableDictionary alloc]init]; // array with all photos per tag
 	
 	for (NSDictionary *photo in self.photos) {
@@ -38,7 +39,6 @@
 				if (!photosForTag[tag]) { // of there are no photos associated with this tag
 					NSMutableArray *photosForThisTag = [@[photo] mutableCopy]; // create a mutuable array, initially consisting of the first ohoto associated with this tag
 					[photosForTag setObject:photosForThisTag forKey:tag]; //add the tag and array to the dictionary
-					[tags addObject:tag]; //add the tag (maybe better to use allKeys method to extract all tags
 				} else {
 					[photosForTag[tag] addObject:photo]; // tag is already in dict, add this photo to the array associated with this tag
 				}
@@ -46,7 +46,7 @@
 		}
 	}
 	self.photosForTag = photosForTag;
-	self.tags = [tags sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+	self.tags = [[photosForTag allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 }
 
 - (void)awakeFromNib
@@ -73,14 +73,13 @@
 
 
 -(IBAction)refreshPhotos{ // no ctrl-drag possible, therefore done in code
-	[self.refreshControl beginRefreshing]; // start animation
+	[self.refreshControl beginRefreshing]; // start animation of the spinner
 	dispatch_queue_t loaderQ = dispatch_queue_create("flick latest loader", NULL); // fetching banished to thread
 	dispatch_async(loaderQ, ^{
-		NSArray *refreshedPhotos = [FlickrFetcher stanfordPhotos];
+		NSArray *refreshedPhotos = [FlickrFetcher stanfordPhotos]; //first create local variable to load in separate thread
 		dispatch_async(dispatch_get_main_queue(), ^{
-			self.photos = refreshedPhotos; // self.photos is UIKit: main queue
-			[self getPhotoTags]; //bug: photos did not get set
-//			[self.tableView reloadData];
+			self.photos = refreshedPhotos; // self.photos is UIKit: main queue,
+			[self getPhotoTags];
 			[self.refreshControl endRefreshing];
 		});
 	});

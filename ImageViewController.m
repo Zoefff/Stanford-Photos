@@ -143,6 +143,7 @@
     [self resetImage]; //need to reset image in case setter is called before viewDidLoad was called (that's when outlets are set)
     self.titleBarButtonItem.title = self.title;
 	[self handleSplitViewBarButtonItem:self.splitViewBarButtonItem];
+	[self setZoomLevel];
 }
 
 //With Autolayout, you have to do geometry-dependent in viewDidLayoutSubviews. viewDidLayoutSubviews is the method sent to you after constraints have been processed.
