@@ -35,6 +35,8 @@
     return UIInterfaceOrientationIsPortrait(orientation);
 }
 
+#pragma mark - Bar button transfer
+
 - (void)splitViewController:(UISplitViewController *)sender
      willHideViewController:(UIViewController *)master
           withBarButtonItem:(UIBarButtonItem *)barButtonItem
@@ -54,7 +56,7 @@
 	id detailViewController = [self.splitViewController.viewControllers lastObject];
 	[detailViewController setSplitViewBarButtonItem:nil];
 }
-#pragma mark - Bar button transfer
+
 
 -(id)splitViewDetailWithBarButtonItem
 {
@@ -132,7 +134,7 @@
 - (void)addToRecent:(NSDictionary *)currentPhoto {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *recentPhotos = [[defaults objectForKey:RECENT_PHOTOS_KEY]mutableCopy];
-    if (!recentPhotos) recentPhotos = [[NSMutableArray alloc]init];
+	if (!recentPhotos) recentPhotos = [[NSMutableArray alloc]init];
     
     if ((currentPhoto) && (![recentPhotos containsObject:currentPhoto]))[recentPhotos insertObject:currentPhoto atIndex:0];
     if (recentPhotos.count>25) {
