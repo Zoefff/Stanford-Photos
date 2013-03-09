@@ -111,6 +111,7 @@
 						self.scrollView.contentSize = image.size; //set size of canvas to the size of the image
 						self.imageView.image = image;
 						self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);  // where in the superview will the imageView be drawn
+						[self setZoomLevel]; //fixed bug: zoomLevel can only be set once the image has been loaded and set
 					}
 					[self.spinner stopAnimating];
 				});
@@ -143,13 +144,7 @@
     [self resetImage]; //need to reset image in case setter is called before viewDidLoad was called (that's when outlets are set)
     self.titleBarButtonItem.title = self.title;
 	[self handleSplitViewBarButtonItem:self.splitViewBarButtonItem];
-	[self setZoomLevel];
 }
-
-//With Autolayout, you have to do geometry-dependent in viewDidLayoutSubviews. viewDidLayoutSubviews is the method sent to you after constraints have been processed.
-//Note that while viewWillAppear: will get called only as you go (back) on screen ...
-//... viewDidLayoutSubviews is called every time self.view’s bounds changes (i.e. more often)
-
 
 -(void)setZoomLevel{
 	if (self.imageView.image) {
@@ -164,8 +159,11 @@
 	}
 }
 
+	//With Autolayout, you have to do geometry-dependent in viewDidLayoutSubviews. viewDidLayoutSubviews is the method sent to you after constraints have been processed.
+	//Note that while viewWillAppear: will get called only as you go (back) on screen ...
+	//... viewDidLayoutSubviews is called every time self.view’s bounds changes (i.e. more often)
 -(void)viewDidLayoutSubviews{
-	[self setZoomLevel];
+	[self setZoomLevel]; // reset zoomLevel when device has been rotated
 }
 
 @end

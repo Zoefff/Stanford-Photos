@@ -159,9 +159,9 @@
                             <constraint firstItem="jeW-Ai-DNC" firstAttribute="top" secondItem="X4x-3g-Il2" secondAttribute="bottom" type="default" id="5gn-KJ-123"/>
                             <constraint firstItem="X4x-3g-Il2" firstAttribute="trailing" secondItem="UOe-AY-tLN" secondAttribute="trailing" type="default" id="BHi-Qu-3mz"/>
                             <constraint firstItem="X4x-3g-Il2" firstAttribute="top" secondItem="UOe-AY-tLN" secondAttribute="top" type="default" id="Cac-iD-IqJ"/>
-                            <constraint firstItem="Rvv-Ej-fQc" firstAttribute="leading" secondItem="UOe-AY-tLN" secondAttribute="leading" constant="365" id="NA8-IN-OjV"/>
                             <constraint firstItem="X4x-3g-Il2" firstAttribute="leading" secondItem="UOe-AY-tLN" secondAttribute="leading" type="default" id="VKd-BH-GoA"/>
                             <constraint firstItem="jeW-Ai-DNC" firstAttribute="bottom" secondItem="UOe-AY-tLN" secondAttribute="bottom" type="default" id="W1j-p2-kWL"/>
+                            <constraint firstAttribute="centerX" secondItem="Rvv-Ej-fQc" secondAttribute="centerX" type="user" id="b6B-Om-2Jc"/>
                             <constraint firstItem="Rvv-Ej-fQc" firstAttribute="centerY" secondItem="UOe-AY-tLN" secondAttribute="centerY" type="default" id="jHD-zc-D9V"/>
                             <constraint firstItem="jeW-Ai-DNC" firstAttribute="trailing" secondItem="UOe-AY-tLN" secondAttribute="trailing" type="default" id="s0u-7G-PEG"/>
                             <constraint firstItem="jeW-Ai-DNC" firstAttribute="leading" secondItem="UOe-AY-tLN" secondAttribute="leading" type="default" id="vWs-F5-kCv"/>
