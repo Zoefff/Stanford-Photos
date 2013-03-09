@@ -85,6 +85,23 @@
     [self resetImage];
 }
 
+-(BOOL)makeRoomInCache{
+	NSFileManager *fileManager = [[NSFileManager alloc]init];
+	NSURL *cacheDirectory = [[fileManager URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask]lastObject]; //get cache directory
+	NSArray *directoryContents = [fileManager contentsOfDirectoryAtURL:cacheDirectory includingPropertiesForKeys:@[NSURLContentAccessDateKey] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
+	NSMutableArray *dateAccessed = [[NSMutableArray alloc]init];
+	for (NSURL *entry in directoryContents) {
+		NSDate *date;
+		[entry getResourceValue:&date forKey:NSURLContentAccessDateKey error:nil];
+		[dateAccessed addObject:@{@"date":date,@"url":entry}];
+	}
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"date" ascending:NO];
+	[dateAccessed sortUsingDescriptors:@[sortDescriptor]];
+	NSURL *oldFileURL = [dateAccessed lastObject][@"url"];
+	BOOL success = [fileManager removeItemAtURL:oldFileURL error:nil];
+	return success;
+}
+
 - (void)resetImage
 {
     if (self.scrollView) {
@@ -97,23 +114,26 @@
         if (imageURL) {
 			dispatch_queue_t imageFetchQ = dispatch_queue_create("image fetcher", NULL);
 			dispatch_async(imageFetchQ, ^{
-				NSFileManager *fileManager = [[NSFileManager alloc]init];
-				NSURL *cacheDirectory = [[fileManager URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask]lastObject];
 				NSString *fileName = [imageURL lastPathComponent];
-				NSURL *cachedPhotoURL = [cacheDirectory URLByAppendingPathComponent:fileName];
+				NSFileManager *fileManager = [[NSFileManager alloc]init];
+				NSURL *cacheDirectory = [[fileManager URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask]lastObject]; //get cache directory
+				NSURL *cachedPhotoURL = [cacheDirectory URLByAppendingPathComponent:fileName]; //create path for a chached photo
+				
 				
 				NSData *imageData;
-				if ([fileManager fileExistsAtPath:[cachedPhotoURL path]]) {
-					imageData = [[NSData alloc] initWithContentsOfURL:cachedPhotoURL];
+				if ([fileManager fileExistsAtPath:[cachedPhotoURL path]]) { // if photo is stored in cache
+					imageData = [[NSData alloc] initWithContentsOfURL:cachedPhotoURL]; // read from cache
 				} else {
 					[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-					imageData = [[NSData alloc] initWithContentsOfURL:self.imageURL];
+					imageData = [[NSData alloc] initWithContentsOfURL:self.imageURL]; // else: download from web
 					[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-					[imageData writeToURL:cachedPhotoURL atomically:TRUE];
+					[imageData writeToURL:cachedPhotoURL atomically:TRUE]; // store in cache
+					[self makeRoomInCache];
 				}
 				
-				UIImage *image = [[UIImage alloc] initWithData:imageData];
-					// check to make sure we are even still interested in this image (might have touched away)
+				UIImage *image = [[UIImage alloc] initWithData:imageData]; // create image from data
+
+					// check to make sure we are still interested in this image (might have touched away)
 				if (self.imageURL == imageURL) {
 						// dispatch back to main queue to do UIKit work
 					dispatch_async(dispatch_get_main_queue(), ^{
