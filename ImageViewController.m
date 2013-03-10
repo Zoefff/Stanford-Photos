@@ -89,16 +89,19 @@
 	NSFileManager *fileManager = [[NSFileManager alloc]init];
 	NSURL *cacheDirectory = [[fileManager URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask]lastObject]; //get cache directory
 	NSArray *directoryContents = [fileManager contentsOfDirectoryAtURL:cacheDirectory includingPropertiesForKeys:@[NSURLContentAccessDateKey] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
-	NSMutableArray *dateAccessed = [[NSMutableArray alloc]init];
+	
+	NSMutableArray *datePhotoAccessed =[[NSMutableArray alloc]init];
 	for (NSURL *entry in directoryContents) {
-		NSDate *date;
-		[entry getResourceValue:&date forKey:NSURLContentAccessDateKey error:nil];
-		[dateAccessed addObject:@{@"date":date,@"url":entry}];
+		[datePhotoAccessed addObject:[entry resourceValuesForKeys:@[NSURLPathKey,NSURLContentAccessDateKey] error:nil]];
 	}
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"date" ascending:NO];
-	[dateAccessed sortUsingDescriptors:@[sortDescriptor]];
-	NSURL *oldFileURL = [dateAccessed lastObject][@"url"];
-	BOOL success = [fileManager removeItemAtURL:oldFileURL error:nil];
+	
+	NSSortDescriptor *accessDateSortDescriptor = [[NSSortDescriptor alloc]initWithKey:NSURLContentAccessDateKey ascending:NO];
+	[datePhotoAccessed sortUsingDescriptors:@[accessDateSortDescriptor]];
+	NSLog(@"%@",datePhotoAccessed);
+	NSURL *oldPhotoURL = [datePhotoAccessed lastObject][NSURLPathKey];
+	NSLog(@"%@",oldPhotoURL);
+	NSLog(@"%@",[oldPhotoURL path]);
+	BOOL success = [fileManager removeItemAtURL:oldPhotoURL error:nil];
 	return success;
 }
 
