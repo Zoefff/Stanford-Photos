@@ -150,6 +150,7 @@
 				}
 				
 				UIImage *image = [[UIImage alloc] initWithData:imageData]; // create image from data
+				imageData = nil; // once imageData is used, it can be discarded
 
 					// check to make sure we are still interested in this image (might have touched away)
 				if (self.imageURL == imageURL) {
@@ -164,6 +165,7 @@
 						}
 						[self.spinner stopAnimating];
 					});
+					image = nil; // once image is set in view, image can be discarded
 				}
 			});
 		}

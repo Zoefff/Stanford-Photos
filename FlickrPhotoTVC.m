@@ -79,6 +79,9 @@
 }
 
 #pragma mark - Segue
+-(BOOL)isIPad{
+	return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -88,7 +91,8 @@
             if ([segue.identifier isEqualToString:@"Show Image"]) {
                 if ([segue.destinationViewController respondsToSelector:@selector(setImageURL:)]) {
 					[self transferSplitViewBarButtonItemToViewController:segue.destinationViewController];
-                    NSURL *url = [FlickrFetcher urlForPhoto:self.photos[indexPath.row] format:FlickrPhotoFormatLarge];
+                    NSURL *url = [FlickrFetcher urlForPhoto:self.photos[indexPath.row]
+													 format:([self isIPad] ? FlickrPhotoFormatOriginal : FlickrPhotoFormatLarge)];
                     [segue.destinationViewController performSelector:@selector(setImageURL:) withObject:url];
                     [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]]; // pass title to 
 					[self addToRecent:self.photos[indexPath.row]];
