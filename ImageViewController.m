@@ -85,23 +85,39 @@
     [self resetImage];
 }
 
+#define MAX_SIZE_CACHE_DIRECTORY 2000000
+
 -(BOOL)makeRoomInCache{
 	NSFileManager *fileManager = [[NSFileManager alloc]init];
 	NSURL *cacheDirectory = [[fileManager URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask]lastObject]; //get cache directory
-	NSArray *directoryContents = [fileManager contentsOfDirectoryAtURL:cacheDirectory includingPropertiesForKeys:@[NSURLContentAccessDateKey] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
+	NSArray *directoryContents = [fileManager contentsOfDirectoryAtURL:cacheDirectory
+											includingPropertiesForKeys:@[NSURLPathKey, NSURLContentAccessDateKey, NSURLFileAllocatedSizeKey]
+															   options:NSDirectoryEnumerationSkipsHiddenFiles
+																 error:nil];
 	
 	NSMutableArray *datePhotoAccessed =[[NSMutableArray alloc]init];
 	for (NSURL *entry in directoryContents) {
-		[datePhotoAccessed addObject:[entry resourceValuesForKeys:@[NSURLPathKey,NSURLContentAccessDateKey] error:nil]];
+		[datePhotoAccessed addObject: [entry resourceValuesForKeys:@[NSURLPathKey,NSURLContentAccessDateKey, NSURLFileAllocatedSizeKey] error:nil]];
+	}
+
+	int sizeDirectory = 0;
+	for (int i = 0; i<[datePhotoAccessed count]; i++) {
+		sizeDirectory += [datePhotoAccessed[i][NSURLFileAllocatedSizeKey] intValue];
 	}
 	
 	NSSortDescriptor *accessDateSortDescriptor = [[NSSortDescriptor alloc]initWithKey:NSURLContentAccessDateKey ascending:NO];
 	[datePhotoAccessed sortUsingDescriptors:@[accessDateSortDescriptor]];
-	NSLog(@"%@",datePhotoAccessed);
-	NSURL *oldPhotoURL = [datePhotoAccessed lastObject][NSURLPathKey];
-	NSLog(@"%@",oldPhotoURL);
-	NSLog(@"%@",[oldPhotoURL path]);
-	BOOL success = [fileManager removeItemAtURL:oldPhotoURL error:nil];
+	
+	BOOL success;
+	while (sizeDirectory >= MAX_SIZE_CACHE_DIRECTORY) {
+		NSURL *oldPhotoURL = [[NSURL alloc] initFileURLWithPath:[datePhotoAccessed lastObject][NSURLPathKey]];
+		[datePhotoAccessed removeLastObject];
+		success = [fileManager removeItemAtURL:oldPhotoURL error:nil];
+		if (success) {
+			sizeDirectory -= [[datePhotoAccessed lastObject][NSURLFileAllocatedSizeKey] intValue];
+		}
+
+	}
 	return success;
 }
 
