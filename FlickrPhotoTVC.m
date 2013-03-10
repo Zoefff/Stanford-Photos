@@ -17,7 +17,7 @@
 
 - (void)setPhotos:(NSArray *)photos
 {
-    _photos = [photos sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:FLICKR_PHOTO_TITLE ascending:YES]]];
+    _photos = photos;
     [self.tableView reloadData];
 }
 
@@ -136,7 +136,12 @@
     NSMutableArray *recentPhotos = [[defaults objectForKey:RECENT_PHOTOS_KEY]mutableCopy];
 	if (!recentPhotos) recentPhotos = [[NSMutableArray alloc]init];
     
-    if ((currentPhoto) && (![recentPhotos containsObject:currentPhoto]))[recentPhotos insertObject:currentPhoto atIndex:0];
+    if (currentPhoto){
+		if ([recentPhotos containsObject:currentPhoto]) {
+			[recentPhotos removeObject:currentPhoto];
+		}
+		[recentPhotos insertObject:currentPhoto atIndex:0];}
+	
     if (recentPhotos.count>25) {
         [recentPhotos removeLastObject];
     }

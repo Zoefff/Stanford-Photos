@@ -138,7 +138,6 @@
 				NSURL *cacheDirectory = [[fileManager URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask]lastObject]; //get cache directory
 				NSURL *cachedPhotoURL = [cacheDirectory URLByAppendingPathComponent:fileName]; //create path for a chached photo
 				
-				
 				NSData *imageData;
 				if ([fileManager fileExistsAtPath:[cachedPhotoURL path]]) { // if photo is stored in cache
 					imageData = [[NSData alloc] initWithContentsOfURL:cachedPhotoURL]; // read from cache

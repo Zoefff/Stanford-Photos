@@ -16,13 +16,12 @@
 
 @implementation RecentPhotoTVC
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *recentPhotos = [defaults objectForKey:RECENT_PHOTOS_KEY];
 	self.photos = recentPhotos;
+//	[self.tableView reloadData];
 }
 
 @end

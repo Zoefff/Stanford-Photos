@@ -103,8 +103,12 @@
         if (indexPath) {
             if ([segue.identifier isEqualToString:@"Show List Of Photos"]) {
                 if ([segue.destinationViewController respondsToSelector:@selector(setPhotos:)]) {
-                    
-                    [segue.destinationViewController performSelector:@selector(setPhotos:) withObject:self.photosForTag[self.tags[indexPath.row]]];
+					
+                    NSArray *sortedPhotos = self.photosForTag[self.tags[indexPath.row]]; // get the photos for this tag
+					sortedPhotos = [sortedPhotos sortedArrayUsingDescriptors:
+									@[[NSSortDescriptor sortDescriptorWithKey:FLICKR_PHOTO_TITLE ascending:YES]]]; // sort the photos
+					[segue.destinationViewController performSelector:@selector(setPhotos:)
+														  withObject:sortedPhotos]; // pass the photos
                     [segue.destinationViewController setTitle:[self titleForRow:indexPath.row]];
                 }
             }
