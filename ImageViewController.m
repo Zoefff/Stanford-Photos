@@ -85,7 +85,7 @@
     [self resetImage];
 }
 
-#define MAX_SIZE_CACHE_DIRECTORY 2000000
+#define MAX_SIZE_CACHE_DIRECTORY 3000000
 
 -(BOOL)makeRoomInCache{
 	NSFileManager *fileManager = [[NSFileManager alloc]init];
@@ -127,10 +127,10 @@
         self.scrollView.contentSize = CGSizeZero;
         self.imageView.image = nil;
 		
-		[self.spinner startAnimating];
 		NSURL *imageURL = self.imageURL; //grab the URL before we send the fetch off to a different thread (no __, because only read only necessary in the thread)
 
         if (imageURL) {
+			[self.spinner startAnimating];
 			dispatch_queue_t imageFetchQ = dispatch_queue_create("image fetcher", NULL);
 			dispatch_async(imageFetchQ, ^{
 				NSString *fileName = [imageURL lastPathComponent];
