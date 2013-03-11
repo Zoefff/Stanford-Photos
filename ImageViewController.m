@@ -90,24 +90,25 @@
 -(BOOL)makeRoomInCache{
 	NSFileManager *fileManager = [[NSFileManager alloc]init];
 	NSURL *cacheDirectory = [[fileManager URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask]lastObject]; //get cache directory
-	NSArray *directoryContents = [fileManager contentsOfDirectoryAtURL:cacheDirectory
+	NSArray *directoryContents = [fileManager contentsOfDirectoryAtURL:cacheDirectory // store URLs in array
 											includingPropertiesForKeys:@[NSURLPathKey, NSURLContentAccessDateKey, NSURLFileAllocatedSizeKey]
 															   options:NSDirectoryEnumerationSkipsHiddenFiles
 																 error:nil];
 	
 	NSMutableArray *datePhotoAccessed =[[NSMutableArray alloc]init];
-	for (NSURL *entry in directoryContents) {
+	for (NSURL *entry in directoryContents) { // loop through array and store URL, Date and Size as dictionaries in array
 		[datePhotoAccessed addObject: [entry resourceValuesForKeys:@[NSURLPathKey,NSURLContentAccessDateKey, NSURLFileAllocatedSizeKey] error:nil]];
 	}
 
 	int sizeDirectory = 0;
-	for (int i = 0; i<[datePhotoAccessed count]; i++) {
+	for (int i = 0; i<[datePhotoAccessed count]; i++) { // loop through array to sum the sizes
 		sizeDirectory += [datePhotoAccessed[i][NSURLFileAllocatedSizeKey] intValue];
 	}
 	
-	NSSortDescriptor *accessDateSortDescriptor = [[NSSortDescriptor alloc]initWithKey:NSURLContentAccessDateKey ascending:NO];
-	[datePhotoAccessed sortUsingDescriptors:@[accessDateSortDescriptor]];
+	NSSortDescriptor *accessDateSortDescriptor = [[NSSortDescriptor alloc]initWithKey:NSURLContentAccessDateKey ascending:NO]; // sort array accroding to access date
+	[datePhotoAccessed sortUsingDescriptors:@[accessDateSortDescriptor]]; // sort array accroding to access date
 	
+		// get least recently accessed URL, remove from array, remove from cache and decrease total size
 	BOOL success;
 	while (sizeDirectory >= MAX_SIZE_CACHE_DIRECTORY) {
 		NSURL *oldPhotoURL = [[NSURL alloc] initFileURLWithPath:[datePhotoAccessed lastObject][NSURLPathKey]];
@@ -165,7 +166,7 @@
 						}
 						[self.spinner stopAnimating];
 					});
-					image = nil; // once image is set in view, image can be discarded
+					image = nil; // once image is set in view, local pointer to image can be discarded
 				}
 			});
 		}
